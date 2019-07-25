@@ -14,19 +14,14 @@ class RoomProvider extends Component {
   componentDidMount() {
     let rooms = this.formatData(items);
     let featuredRooms = rooms.filter(room => room.featured === true);
-    this.setState(
-      () => {
-        return {
-          rooms,
-          featuredRooms,
-          sortedRooms: rooms,
-          loading: false
-        };
-      },
-      () => {
-        console.log(this.state);
-      }
-    );
+    this.setState(() => {
+      return {
+        rooms,
+        featuredRooms,
+        sortedRooms: rooms,
+        loading: false
+      };
+    });
   }
 
   formatData = items => {
@@ -41,9 +36,16 @@ class RoomProvider extends Component {
 
   getData = () => {};
 
+  getRoom = slug => {
+    let tempRooms = [...this.state.rooms];
+    const room = tempRooms.find(room => room.slug === slug);
+
+    return room;
+  };
+
   render() {
     return (
-      <RoomContext.Provider value={{ ...this.state }}>
+      <RoomContext.Provider value={{ ...this.state, getRoom: this.getRoom }}>
         {this.props.children}
       </RoomContext.Provider>
     );
